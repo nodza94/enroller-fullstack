@@ -52,7 +52,7 @@
 					 this.registering = false;
 				 })
 				 .catch(response => {
-					 this.error = "Użytkownik już istnieje!";     
+					 this.error = "Użytkownik już istnieje";     
 				 });
 			},
             logout() {
@@ -73,10 +73,9 @@
   
   .error-alert {
     border: 3px dotted red;
-
 	padding: 10px;
 	background: pink;
 	text-align: center;
-	
+
   }
 </style>
