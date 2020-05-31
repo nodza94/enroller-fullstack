@@ -32,5 +32,14 @@ public class MeetingService {
 		return meeting;
 	}
 
+	public Meeting findById(long meetingId) {
+		return (Meeting) session.get(Meeting.class, meetingId);
+	}
 	
+	public Meeting deleteMeeting(Meeting meeting) {
+		Transaction transaction = session.beginTransaction();
+		session.delete(meeting);
+		transaction.commit();
+		return meeting;
+	}
 }
