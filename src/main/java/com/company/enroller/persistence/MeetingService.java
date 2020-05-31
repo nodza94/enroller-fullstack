@@ -2,6 +2,8 @@ package com.company.enroller.persistence;
 
 import com.company.enroller.model.Meeting;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -10,9 +12,11 @@ import java.util.Collection;
 public class MeetingService {
 
     DatabaseConnector connector;
+    Session session;
 
     public MeetingService() {
         connector = DatabaseConnector.getInstance();
+        session = DatabaseConnector.getInstance().getSession();
     }
 
     public Collection<Meeting> getAll() {
@@ -21,5 +25,12 @@ public class MeetingService {
         return query.list();
     }
 
+	public Meeting addMeeting(Meeting meeting) {
+		Transaction transaction = session.beginTransaction();
+		session.save(meeting);
+		transaction.commit();
+		return meeting;
+	}
 
+	
 }

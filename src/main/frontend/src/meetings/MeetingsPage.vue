@@ -29,9 +29,14 @@
                 meetings: []
             };
         },
+		mounted(){
+            this.listMeetings();
+        },
         methods: {
             addNewMeeting(meeting) {
-                this.meetings.push(meeting);
+                
+				//this.meetings.push(meeting);
+                this.$http.post('meetings', meeting).then(response => this.meetings.push(response.body));
             },
             addMeetingParticipant(meeting) {
                 meeting.participants.push(this.username);
@@ -41,7 +46,11 @@
             },
             deleteMeeting(meeting) {
                 this.meetings.splice(this.meetings.indexOf(meeting), 1);
-            }
+            },
+			listMeetings() {
+				this.$http.get('meetings')
+			.then(response => this.meetings = response.body);
+			}
         }
     }
 </script>
