@@ -7,6 +7,8 @@
            </span>
     <h3 v-else>
       Zaplanowane zajęcia ({{ meetings.length }})
+	  
+	  
     </h3>
 
     <meetings-list :meetings="meetings"
@@ -36,7 +38,7 @@
             addNewMeeting(meeting) {
                 
 				//this.meetings.push(meeting);
-                this.$http.post('meetings', meeting).then(response => this.meetings.push(response.body));
+                this.$http.post('meetings', meeting).then(this.listMeetings());
             },
             addMeetingParticipant(meeting) {
                 meeting.participants.push(this.username);

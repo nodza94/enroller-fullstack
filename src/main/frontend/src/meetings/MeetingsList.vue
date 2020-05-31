@@ -4,8 +4,8 @@
     <tr>
       <th>Nazwa spotkania</th>
       <th>Opis</th>
-	  <th>Data</th>
       <th>Uczestnicy</th>
+	  <th>Data</th>
       <td></td>
     </tr>
     </thead>
@@ -21,6 +21,7 @@
           </li>
         </ul>
       </td>
+	  <!--
       <td style="text-align: right; min-width: 400px">
         <button v-if="!checkIfEnrolled(username, meeting)" class="button-outline"
                 @click="$emit('attend', meeting)">
@@ -32,9 +33,11 @@
           Usuń puste spotkanie
         </button>
       </td>
+	    -->
     </tr>
     </tbody>
   </table>
+
 </template>
 
 <script>
