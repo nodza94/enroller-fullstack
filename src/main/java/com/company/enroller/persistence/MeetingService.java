@@ -42,4 +42,11 @@ public class MeetingService {
 		transaction.commit();
 		return meeting;
 	}
+	
+	public Meeting updateMeeting(Meeting meeting) {
+		Transaction transaction = this.session.beginTransaction();
+		session.update(meeting);
+		transaction.commit();
+		return meeting;
+	}
 }

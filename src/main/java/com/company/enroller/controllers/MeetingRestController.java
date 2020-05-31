@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -39,9 +40,42 @@ public class MeetingRestController {
 	}
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteMeeting(@PathVariable("id") long id) {
-		Meeting meeting = meetingService.findById(id);
-		meetingService.deleteMeeting(meeting);
+	public ResponseEntity<?> delMeeting(@PathVariable("id") long meetingId) {
+		Meeting meeting = meetingService.findById(meetingId);
+		if (meeting == null) {
+			return new ResponseEntity("Meeting with id: " + meetingId + " does not exist", HttpStatus.NOT_FOUND);
+		}
+		meeting = meetingService.deleteMeeting(meeting);
 		return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
+	}
+    
+    @RequestMapping(value = "/{id}/participants/{login}", method = RequestMethod.POST)
+	public ResponseEntity<?> addParticipant(@PathVariable("id") long meetingId, @PathVariable("login") String login) {
+		Meeting meeting = meetingService.findById(meetingId);
+		Participant participant = participantService.findByLogin(login);
+
+		if (meeting == null || participant == null) {
+			return new ResponseEntity("Unable to update. Participant with login " + login + " or meeting with id "
+					+ +meetingId + " does not exist", HttpStatus.NOT_FOUND);
+		}
+
+		meeting.addParticipant(participant);
+		meeting = meetingService.updateMeeting(meeting);
+		return new ResponseEntity<Collection<Participant>>(meeting.getParticipants(), HttpStatus.OK);
+	}
+    
+    @RequestMapping(value = "/{id}/participants/{login}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delParticipant(@PathVariable("id") long meetingId, @PathVariable("login") String login) {
+		Meeting meeting = meetingService.findById(meetingId);
+		Participant participant = participantService.findByLogin(login);
+
+		if (meeting == null || participant == null) {
+			return new ResponseEntity("Unable to update. Participant with login " + login + " or meeting with id "
+					+ +meetingId + " does not exist", HttpStatus.NOT_FOUND);
+		}
+
+		meeting.removeParticipant(participant);
+		meeting = meetingService.updateMeeting(meeting);
+		return new ResponseEntity<Collection<Participant>>(meeting.getParticipants(), HttpStatus.OK);
 	}
 }
